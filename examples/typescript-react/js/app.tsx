@@ -48,7 +48,8 @@ class TodoApp extends React.Component<IAppProps, IAppState> {
     // input field value from the state
     if (val) {
       const tags = val.match(/@[A-Za-z]*/g);
-      this.props.model.addTodo(val, tags);
+      const title = val.replace(/@[A-Za-z]*/g, '');
+      this.props.model.addTodo(title, tags);
       this.setState({input: ''});
       // setting the input state to '' in order to clear the input field
     }

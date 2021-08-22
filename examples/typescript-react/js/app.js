@@ -44,8 +44,8 @@ var TodoApp = (function (_super) {
         var val = this.state.input.trim();
         if (val) {
             var tags = val.match(/@[A-Za-z]*/g);
-            console.log(tags);
-            this.props.model.addTodo(val, ['shopping', 'household']);
+            var title = val.replace(/@[A-Za-z]*/g, '');
+            this.props.model.addTodo(title, tags);
             this.setState({ input: '' });
         }
     };
