@@ -39,7 +39,7 @@ interface ITodoModel {
   toggleAll(checked);
   toggle(todoToToggle);
   destroy(todo);
-  save(todoToSave, text);
+  save(todoToSave, text, tags, title);
   clearCompleted();
 }
 

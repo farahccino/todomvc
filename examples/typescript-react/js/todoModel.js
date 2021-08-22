@@ -44,9 +44,9 @@ var TodoModel = (function () {
         });
         this.inform();
     };
-    TodoModel.prototype.save = function (todoToSave, text) {
+    TodoModel.prototype.save = function (todoToSave, text, tags, title) {
         this.todos = this.todos.map(function (todo) {
-            return todo !== todoToSave ? todo : utils_1.Utils.extend({}, todo, { title: text });
+            return todo !== todoToSave ? todo : utils_1.Utils.extend({}, todo, { title: title, todo: text, tags: tags });
         });
         this.inform();
     };

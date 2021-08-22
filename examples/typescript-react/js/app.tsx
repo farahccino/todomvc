@@ -78,7 +78,9 @@ class TodoApp extends React.Component<IAppProps, IAppState> {
 	}
 
 	public save(todoToSave: ITodo, text: String) {
-		this.props.model.save(todoToSave, text);
+		const tags = text.match(/@[A-Za-z]*/g);
+		const title = text.replace(/@[A-Za-z]*/g, "");
+		this.props.model.save(todoToSave, text, tags, title);
 		this.setState({ editing: null });
 	}
 

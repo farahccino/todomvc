@@ -64,7 +64,9 @@ var TodoApp = (function (_super) {
         this.setState({ editing: todo.id });
     };
     TodoApp.prototype.save = function (todoToSave, text) {
-        this.props.model.save(todoToSave, text);
+        var tags = text.match(/@[A-Za-z]*/g);
+        var title = text.replace(/@[A-Za-z]*/g, "");
+        this.props.model.save(todoToSave, text, tags, title);
         this.setState({ editing: null });
     };
     TodoApp.prototype.cancel = function () {
