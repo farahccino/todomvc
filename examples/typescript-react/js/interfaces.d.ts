@@ -2,7 +2,8 @@ interface ITodo {
   id: string,
   title: string,
   tags: string[],
-  completed: boolean
+  completed: boolean,
+  todo: string
 }
 
 interface ITodoItemProps {
@@ -34,7 +35,7 @@ interface ITodoModel {
   onChanges : Array<any>;
   subscribe(onChange);
   inform();
-  addTodo(title : string, tags: string[]);
+  addTodo(title : string, tags: string[], todo: string);
   toggleAll(checked);
   toggle(todoToToggle);
   destroy(todo);

@@ -24,18 +24,18 @@ var TodoApp = (function (_super) {
         _this.state = {
             nowShowing: constants_1.ALL_TODOS,
             editing: null,
-            input: ''
+            input: "",
         };
         return _this;
     }
     TodoApp.prototype.componentDidMount = function () {
         var setState = this.setState;
         var router = Router({
-            '/': setState.bind(this, { nowShowing: constants_1.ALL_TODOS }),
-            '/active': setState.bind(this, { nowShowing: constants_1.ACTIVE_TODOS }),
-            '/completed': setState.bind(this, { nowShowing: constants_1.COMPLETED_TODOS })
+            "/": setState.bind(this, { nowShowing: constants_1.ALL_TODOS }),
+            "/active": setState.bind(this, { nowShowing: constants_1.ACTIVE_TODOS }),
+            "/completed": setState.bind(this, { nowShowing: constants_1.COMPLETED_TODOS }),
         });
-        router.init('/');
+        router.init("/");
     };
     TodoApp.prototype.handleNewTodoKeyDown = function (event) {
         if (event.keyCode !== constants_1.ENTER_KEY) {
@@ -45,9 +45,9 @@ var TodoApp = (function (_super) {
         var val = this.state.input.trim();
         if (val) {
             var tags = val.match(/@[A-Za-z]*/g);
-            var title = val.replace(/@[A-Za-z]*/g, '');
-            this.props.model.addTodo(title, tags);
-            this.setState({ input: '' });
+            var title = val.replace(/@[A-Za-z]*/g, "");
+            this.props.model.addTodo(title, tags, val);
+            this.setState({ input: "" });
         }
     };
     TodoApp.prototype.toggleAll = function (event) {
@@ -100,8 +100,7 @@ var TodoApp = (function (_super) {
         }, 0);
         var completedCount = todos.length - activeTodoCount;
         if (activeTodoCount || completedCount) {
-            footer =
-                React.createElement(footer_1.TodoFooter, { count: activeTodoCount, completedCount: completedCount, nowShowing: this.state.nowShowing, onClearCompleted: function (e) { return _this.clearCompleted(); } });
+            footer = (React.createElement(footer_1.TodoFooter, { count: activeTodoCount, completedCount: completedCount, nowShowing: this.state.nowShowing, onClearCompleted: function (e) { return _this.clearCompleted(); } }));
         }
         if (todos.length) {
             main = (React.createElement("section", { className: "main" },
@@ -118,9 +117,9 @@ var TodoApp = (function (_super) {
     };
     return TodoApp;
 }(React.Component));
-var model = new todoModel_1.TodoModel('react-todos');
+var model = new todoModel_1.TodoModel("react-todos");
 function render() {
-    ReactDOM.render(React.createElement(TodoApp, { model: model }), document.getElementsByClassName('todoapp')[0]);
+    ReactDOM.render(React.createElement(TodoApp, { model: model }), document.getElementsByClassName("todoapp")[0]);
 }
 model.subscribe(render);
 render();
@@ -210,7 +209,7 @@ var TodoItem = (function (_super) {
     __extends(TodoItem, _super);
     function TodoItem(props) {
         var _this = _super.call(this, props) || this;
-        _this.state = { editText: _this.props.todo.title };
+        _this.state = { editText: _this.props.todo.todo };
         return _this;
     }
     TodoItem.prototype.handleSubmit = function (event) {
@@ -225,7 +224,7 @@ var TodoItem = (function (_super) {
     };
     TodoItem.prototype.handleEdit = function () {
         this.props.onEdit();
-        this.setState({ editText: this.props.todo.title });
+        this.setState({ editText: this.props.todo.todo });
     };
     TodoItem.prototype.handleKeyDown = function (event) {
         if (event.keyCode === constants_1.ESCAPE_KEY) {
@@ -263,7 +262,8 @@ var TodoItem = (function (_super) {
                     React.createElement("input", { className: "toggle", type: "checkbox", checked: this.props.todo.completed, onChange: this.props.onToggle }),
                     React.createElement("label", { onDoubleClick: function (e) { return _this.handleEdit(); } }, this.props.todo.title)),
                 React.createElement("div", { style: { display: "flex", justifyContent: "space-between" } },
-                    React.createElement("div", null, this.props.todo.tags.map(function (tag) { return (React.createElement("span", null, tag)); })),
+                    React.createElement("div", null, this.props.todo.tags &&
+                        this.props.todo.tags.map(function (tag) { return React.createElement("span", null, tag); })),
                     React.createElement("button", { className: "destroy", onClick: this.props.onDestroy })))),
             React.createElement("input", { ref: "editField", className: "edit", value: this.state.editText, onBlur: function (e) { return _this.handleSubmit(e); }, onChange: function (e) { return _this.handleChange(e); }, onKeyDown: function (e) { return _this.handleKeyDown(e); } })));
     };
@@ -288,12 +288,13 @@ var TodoModel = (function () {
         utils_1.Utils.store(this.key, this.todos);
         this.onChanges.forEach(function (cb) { cb(); });
     };
-    TodoModel.prototype.addTodo = function (title, tags) {
+    TodoModel.prototype.addTodo = function (title, tags, todo) {
         this.todos = this.todos.concat({
             id: utils_1.Utils.uuid(),
             title: title,
             completed: false,
-            tags: tags
+            tags: tags,
+            todo: todo
         });
         this.inform();
     };

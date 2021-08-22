@@ -16,7 +16,7 @@ class TodoItem extends React.Component<ITodoItemProps, ITodoItemState> {
 
 	constructor(props: ITodoItemProps) {
 		super(props);
-		this.state = { editText: this.props.todo.title };
+		this.state = { editText: this.props.todo.todo };
 	}
 
 	public handleSubmit(event: React.FormEvent) {
@@ -31,7 +31,7 @@ class TodoItem extends React.Component<ITodoItemProps, ITodoItemState> {
 
 	public handleEdit() {
 		this.props.onEdit();
-		this.setState({ editText: this.props.todo.title });
+		this.setState({ editText: this.props.todo.todo });
 	}
 
 	public handleKeyDown(event: React.KeyboardEvent) {
@@ -109,9 +109,8 @@ class TodoItem extends React.Component<ITodoItemProps, ITodoItemState> {
 						{/* @ts-ignore */}
 						<div style={{ display: "flex", justifyContent: "space-between" }}>
 							<div>
-								{this.props.todo.tags.map((tag) => (
-									<span>{tag}</span>
-								))}
+								{this.props.todo.tags &&
+									this.props.todo.tags.map((tag) => <span>{tag}</span>)}
 							</div>
 							<button className="destroy" onClick={this.props.onDestroy} />
 						</div>

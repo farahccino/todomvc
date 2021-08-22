@@ -23,18 +23,18 @@ var TodoApp = (function (_super) {
         _this.state = {
             nowShowing: constants_1.ALL_TODOS,
             editing: null,
-            input: ''
+            input: "",
         };
         return _this;
     }
     TodoApp.prototype.componentDidMount = function () {
         var setState = this.setState;
         var router = Router({
-            '/': setState.bind(this, { nowShowing: constants_1.ALL_TODOS }),
-            '/active': setState.bind(this, { nowShowing: constants_1.ACTIVE_TODOS }),
-            '/completed': setState.bind(this, { nowShowing: constants_1.COMPLETED_TODOS })
+            "/": setState.bind(this, { nowShowing: constants_1.ALL_TODOS }),
+            "/active": setState.bind(this, { nowShowing: constants_1.ACTIVE_TODOS }),
+            "/completed": setState.bind(this, { nowShowing: constants_1.COMPLETED_TODOS }),
         });
-        router.init('/');
+        router.init("/");
     };
     TodoApp.prototype.handleNewTodoKeyDown = function (event) {
         if (event.keyCode !== constants_1.ENTER_KEY) {
@@ -44,9 +44,9 @@ var TodoApp = (function (_super) {
         var val = this.state.input.trim();
         if (val) {
             var tags = val.match(/@[A-Za-z]*/g);
-            var title = val.replace(/@[A-Za-z]*/g, '');
-            this.props.model.addTodo(title, tags);
-            this.setState({ input: '' });
+            var title = val.replace(/@[A-Za-z]*/g, "");
+            this.props.model.addTodo(title, tags, val);
+            this.setState({ input: "" });
         }
     };
     TodoApp.prototype.toggleAll = function (event) {
@@ -99,8 +99,7 @@ var TodoApp = (function (_super) {
         }, 0);
         var completedCount = todos.length - activeTodoCount;
         if (activeTodoCount || completedCount) {
-            footer =
-                React.createElement(footer_1.TodoFooter, { count: activeTodoCount, completedCount: completedCount, nowShowing: this.state.nowShowing, onClearCompleted: function (e) { return _this.clearCompleted(); } });
+            footer = (React.createElement(footer_1.TodoFooter, { count: activeTodoCount, completedCount: completedCount, nowShowing: this.state.nowShowing, onClearCompleted: function (e) { return _this.clearCompleted(); } }));
         }
         if (todos.length) {
             main = (React.createElement("section", { className: "main" },
@@ -117,9 +116,9 @@ var TodoApp = (function (_super) {
     };
     return TodoApp;
 }(React.Component));
-var model = new todoModel_1.TodoModel('react-todos');
+var model = new todoModel_1.TodoModel("react-todos");
 function render() {
-    ReactDOM.render(React.createElement(TodoApp, { model: model }), document.getElementsByClassName('todoapp')[0]);
+    ReactDOM.render(React.createElement(TodoApp, { model: model }), document.getElementsByClassName("todoapp")[0]);
 }
 model.subscribe(render);
 render();
