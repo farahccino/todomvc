@@ -22,7 +22,8 @@ class TodoApp extends React.Component<IAppProps, IAppState> {
     super(props);
     this.state = {
       nowShowing: ALL_TODOS,
-      editing: null
+      editing: null,
+      input: ''
     };
   }
 
@@ -43,13 +44,16 @@ class TodoApp extends React.Component<IAppProps, IAppState> {
 
     event.preventDefault();
 
-    var val = (ReactDOM.findDOMNode(this.refs["newField"]) as HTMLInputElement).value.trim();
-
+    const val = this.state.input.trim(); //trim removes spacing outside of string
+    // input field value from the state
     if (val) {
       this.props.model.addTodo(val);
-      (ReactDOM.findDOMNode(this.refs["newField"]) as HTMLInputElement).value = '';
+      this.setState({input: ''})
+      // setting the input state to '' in order to clear the input field
     }
   }
+
+
 
   public toggleAll(event : React.FormEvent) {
     var target : any = event.target;
@@ -81,6 +85,10 @@ class TodoApp extends React.Component<IAppProps, IAppState> {
   public clearCompleted() {
     this.props.model.clearCompleted();
   }
+
+  public handleInput(input: string) {
+    this.setState({input: input});
+}
 
   public render() {
     var footer;
@@ -162,8 +170,10 @@ class TodoApp extends React.Component<IAppProps, IAppState> {
           <input
             ref="newField"
             className="new-todo"
+            value={this.state.input}
             placeholder="What needs to be done?"
             onKeyDown={ e => this.handleNewTodoKeyDown(e) }
+            onChange={ e => this.handleInput(e.target.value) }
             autoFocus={true}
           />
         </header>

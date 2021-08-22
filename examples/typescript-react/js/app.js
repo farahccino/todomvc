@@ -22,7 +22,8 @@ var TodoApp = (function (_super) {
         var _this = _super.call(this, props) || this;
         _this.state = {
             nowShowing: constants_1.ALL_TODOS,
-            editing: null
+            editing: null,
+            input: ''
         };
         return _this;
     }
@@ -40,10 +41,10 @@ var TodoApp = (function (_super) {
             return;
         }
         event.preventDefault();
-        var val = ReactDOM.findDOMNode(this.refs["newField"]).value.trim();
+        var val = this.state.input.trim();
         if (val) {
             this.props.model.addTodo(val);
-            ReactDOM.findDOMNode(this.refs["newField"]).value = '';
+            this.setState({ input: '' });
         }
     };
     TodoApp.prototype.toggleAll = function (event) {
@@ -69,6 +70,9 @@ var TodoApp = (function (_super) {
     };
     TodoApp.prototype.clearCompleted = function () {
         this.props.model.clearCompleted();
+    };
+    TodoApp.prototype.handleInput = function (input) {
+        this.setState({ input: input });
     };
     TodoApp.prototype.render = function () {
         var _this = this;
@@ -105,7 +109,7 @@ var TodoApp = (function (_super) {
         return (React.createElement("div", null,
             React.createElement("header", { className: "header" },
                 React.createElement("h1", null, "todos"),
-                React.createElement("input", { ref: "newField", className: "new-todo", placeholder: "What needs to be done?", onKeyDown: function (e) { return _this.handleNewTodoKeyDown(e); }, autoFocus: true })),
+                React.createElement("input", { ref: "newField", className: "new-todo", value: this.state.input, placeholder: "What needs to be done?", onKeyDown: function (e) { return _this.handleNewTodoKeyDown(e); }, onChange: function (e) { return _this.handleInput(e.target.value); }, autoFocus: true })),
             main,
             footer));
     };
