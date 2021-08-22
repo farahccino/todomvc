@@ -43,7 +43,9 @@ var TodoApp = (function (_super) {
         event.preventDefault();
         var val = this.state.input.trim();
         if (val) {
-            this.props.model.addTodo(val);
+            var tags = val.match(/@[A-Za-z]*/g);
+            console.log(tags);
+            this.props.model.addTodo(val, ['shopping', 'household']);
             this.setState({ input: '' });
         }
     };

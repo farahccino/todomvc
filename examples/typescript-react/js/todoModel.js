@@ -14,11 +14,12 @@ var TodoModel = (function () {
         utils_1.Utils.store(this.key, this.todos);
         this.onChanges.forEach(function (cb) { cb(); });
     };
-    TodoModel.prototype.addTodo = function (title) {
+    TodoModel.prototype.addTodo = function (title, tags) {
         this.todos = this.todos.concat({
             id: utils_1.Utils.uuid(),
             title: title,
-            completed: false
+            completed: false,
+            tags: tags
         });
         this.inform();
     };

@@ -33,11 +33,12 @@ class TodoModel implements ITodoModel {
     this.onChanges.forEach(function (cb) { cb(); });
   }
 
-  public addTodo(title : string) {
+  public addTodo(title : string, tags: string[]) {
     this.todos = this.todos.concat({
       id: Utils.uuid(),
       title: title,
-      completed: false
+      completed: false,
+      tags: tags
     });
 
     this.inform();

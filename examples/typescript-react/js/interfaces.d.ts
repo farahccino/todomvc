@@ -1,6 +1,7 @@
 interface ITodo {
   id: string,
   title: string,
+  tags: string[],
   completed: boolean
 }
 
@@ -33,7 +34,7 @@ interface ITodoModel {
   onChanges : Array<any>;
   subscribe(onChange);
   inform();
-  addTodo(title : string);
+  addTodo(title : string, tags: string[]);
   toggleAll(checked);
   toggle(todoToToggle);
   destroy(todo);

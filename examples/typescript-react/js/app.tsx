@@ -47,8 +47,9 @@ class TodoApp extends React.Component<IAppProps, IAppState> {
     const val = this.state.input.trim(); //trim removes spacing outside of string
     // input field value from the state
     if (val) {
-      this.props.model.addTodo(val);
-      this.setState({input: ''})
+      const tags = val.match(/@[A-Za-z]*/g);
+      this.props.model.addTodo(val, tags);
+      this.setState({input: ''});
       // setting the input state to '' in order to clear the input field
     }
   }
@@ -111,6 +112,7 @@ class TodoApp extends React.Component<IAppProps, IAppState> {
         <TodoItem
           key={todo.id}
           todo={todo}
+
           onToggle={this.toggle.bind(this, todo)}
           onDestroy={this.destroy.bind(this, todo)}
           onEdit={this.edit.bind(this, todo)}
